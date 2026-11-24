@@ -170,7 +170,9 @@ if (!REDUCED) {
   });
   if (latent) heroTl.to(latent.state, { develop: 1, ease: 'power1.inOut', duration: 0.75 }, 0);
   heroTl
-    .to(['.latent__eyebrow', '.latent__tag', '.latent__cta', '.latent__hint', '.latent__scroll'], { autoAlpha: 0, y: -40, stagger: 0.02, duration: 0.25 }, 0)
+    .fromTo(['.latent__eyebrow', '.latent__tag', '.latent__cta', '.latent__hint', '.latent__scroll'],
+      { autoAlpha: 1, y: 0 },
+      { autoAlpha: 0, y: -40, stagger: 0.02, duration: 0.25, immediateRender: false }, 0)
     .to('.latent__name .ln--1', { xPercent: -6, duration: 0.8 }, 0)
     .to('.latent__name .ln--2', { xPercent: 5, duration: 0.8 }, 0)
     .to('.latent__name .ln--3', { yPercent: -120, autoAlpha: 0, duration: 0.5 }, 0.1)
@@ -565,6 +567,20 @@ $('.foot__rewind').addEventListener('click', () => {
   $('#latent').focus({ preventScroll: true });
 });
 
+/* ── Motion toggle (full by default, opt-in reduced mode) ── */
+const motBtn = $('.hud__motion');
+if (motBtn) {
+  motBtn.setAttribute('aria-pressed', String(!REDUCED));
+  motBtn.querySelector('.hud__motion-label').textContent = REDUCED ? 'Mode tenang' : 'Gerak penuh';
+  motBtn.addEventListener('click', () => {
+    const next = REDUCED ? 'full' : 'reduced';
+    try { localStorage.setItem('motion', next); } catch (e) {}
+    const url = new URL(location.href);
+    url.searchParams.delete('motion');
+    location.href = url.toString();
+  });
+}
+
 /* ── Sound toggle ── */
 const sndBtn = $('.hud__sound');
 sndBtn.addEventListener('click', () => {
@@ -587,5 +603,6 @@ $$('main > section[data-chapter]').forEach((sec, i) => {
 });
 setChapter(0, $('#latent'));
 
-window.addEventListener('load', () => ScrollTrigger.refresh());
-document.fonts?.ready.then(() => ScrollTrigger.refresh());
+const refreshWhenReady = () => { if (!document.body.classList.contains('is-loading')) ScrollTrigger.refresh(); };
+window.addEventListener('load', refreshWhenReady);
+document.fonts?.ready.then(refreshWhenReady);

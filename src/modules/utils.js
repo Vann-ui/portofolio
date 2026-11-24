@@ -7,14 +7,14 @@ export const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 export const lerp = (a, b, t) => a + (b - a) * t;
 export const mapRange = (v, a, b, c, d) => c + ((v - a) / (b - a)) * (d - c);
 
-// Motion preference: OS setting by default; `?motion=full|reduced` overrides (remembered).
+// Motion preference: full motion by default; `?motion=reduced|full` or the HUD toggle overrides (remembered).
 const motionParam = new URLSearchParams(location.search).get('motion');
 if (motionParam === 'full' || motionParam === 'reduced') { try { localStorage.setItem('motion', motionParam); } catch (e) {} }
 let motionPref = null;
 try { motionPref = localStorage.getItem('motion'); } catch (e) {}
 
 export const env = {
-  reduced: motionPref ? motionPref === 'reduced' : window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  reduced: motionPref === 'reduced',
   finePointer: window.matchMedia('(hover: hover) and (pointer: fine)').matches,
   get mobile() { return window.innerWidth < 769; },
 };

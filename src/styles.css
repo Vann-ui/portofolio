@@ -134,6 +134,8 @@ em { font-style: italic; }
 .hud__rec { display: inline-flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
 .hud__rec i { width: 7px; height: 7px; border-radius: 50%; background: #ff3b2f; animation: rec 1.6s steps(1) infinite; }
 @keyframes rec { 50% { opacity: .15; } }
+.hud__motion { display: inline-flex; align-items: center; gap: 8px; letter-spacing: .22em; text-transform: uppercase; font-size: 10.5px; opacity: .82; transition: opacity .3s; }
+.hud__motion:hover { opacity: 1; }
 .hud__sound { display: inline-flex; align-items: center; gap: 10px; letter-spacing: .22em; text-transform: uppercase; font-size: 10.5px; }
 .hud__sound-bars { display: inline-flex; gap: 2px; align-items: flex-end; height: 10px; }
 .hud__sound-bars i { width: 2px; height: 3px; background: currentColor; transition: height .3s; }
@@ -581,6 +583,8 @@ em { font-style: italic; }
   .rail { display: none; }
   .viewfinder { inset: 8px; }
   .hud { font-size: 9.5px; letter-spacing: .18em; }
+  .hud__right { gap: 14px; }
+  .hud__motion, .hud__sound { font-size: 9.5px; letter-spacing: .16em; }
   .hud__rec .hud__tc { display: none; }
   .hud__chapter { margin-left: 8px; padding-left: 8px; }
 
@@ -647,14 +651,12 @@ em { font-style: italic; }
 }
 
 /* ==========================================================================
-   Reduced motion — identity kept, movement removed
+   Reduced motion — identity kept, movement removed (opt-in via HUD / ?motion=reduced)
    ========================================================================== */
-@media (prefers-reduced-motion: reduce) {
-  .grain { animation: none; }
-  .latent__scroll i, .latent__hint-dot::after, .darkroom__lamp, .hud__rec i { animation: none; }
-  .svc__marquee span, .screen__sweep, .screen__digit::after { animation: none !important; }
-  .svc__roll, .svc__name, .print__paper { transition: none; }
-}
+.reduced .grain { animation: none; }
+.reduced .latent__scroll i, .reduced .latent__hint-dot::after, .reduced .darkroom__lamp, .reduced .hud__rec i { animation: none; }
+.reduced .svc__marquee span, .reduced .screen__sweep, .reduced .screen__digit::after { animation: none !important; }
+.reduced .svc__roll, .reduced .svc__name, .reduced .print__paper { transition: none; }
 .reduced .latent__hint { display: none; }
 .reduced .darkroom__pin { height: auto; overflow: visible; padding: 18vh 0 14vh; }
 .reduced .darkroom__track { position: relative; flex-wrap: wrap; height: auto; padding: 0 7vw 0 9vw; gap: 6vh 4vw; align-items: flex-start; }
