@@ -118,9 +118,14 @@ if (latent) {
 const loaderIris = createAperture($('.loader__iris'), { blades: 9 });
 const introHidden = ['.hud', '.rail', '.viewfinder', '.latent__eyebrow', '.latent__tag', '.latent__cta', '.latent__hint', '.latent__scroll'];
 
+let heroTl = null;
 function finishLoading() {
   document.body.classList.remove('is-loading');
   $('.loader')?.remove();
+  if (!REDUCED) {
+    gsap.set(introHidden, { autoAlpha: 1 });
+    heroTl?.invalidate();
+  }
   lenis?.start();
   ScrollTrigger.refresh();
 }
@@ -165,13 +170,12 @@ const mm = gsap.matchMedia();
 if (!REDUCED) {
   // ── Hero: develop the whole frame, then it becomes a print ──
   gsap.set('.latent__stage', { clipPath: 'inset(0% 0% 0% 0%)' });
-  const heroTl = gsap.timeline({
+  heroTl = gsap.timeline({
     scrollTrigger: { trigger: '.latent', start: 'top top', end: '+=130%', pin: '.latent__stage', scrub: 0.7 },
   });
   if (latent) heroTl.to(latent.state, { develop: 1, ease: 'power1.inOut', duration: 0.75 }, 0);
   heroTl
-    .fromTo(['.latent__eyebrow', '.latent__tag', '.latent__cta', '.latent__hint', '.latent__scroll'],
-      { autoAlpha: 1, y: 0 },
+    .to(['.latent__eyebrow', '.latent__tag', '.latent__cta', '.latent__hint', '.latent__scroll'],
       { autoAlpha: 0, y: -40, stagger: 0.02, duration: 0.25, immediateRender: false }, 0)
     .to('.latent__name .ln--1', { xPercent: -6, duration: 0.8 }, 0)
     .to('.latent__name .ln--2', { xPercent: 5, duration: 0.8 }, 0)
